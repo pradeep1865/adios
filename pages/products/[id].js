@@ -1,12 +1,18 @@
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 export default function ProductDetail({ product }) {
-  const router = useRouter();
   if (!product) return <div>Loading…</div>;
 
   return (
     <main className="max-w-2xl mx-auto rounded shadow bg-white p-8 mt-10">
-      <img src={product.image} alt={product.name} className="w-full h-72 object-contain rounded" />
+      <Image
+  src={product.image}
+  alt={product.name}
+  width={400}
+  height={400}
+  className="rounded h-48 w-full object-cover mb-2"
+/>
       <h2 className="text-3xl font-bold text-pink-600 mt-4">{product.name}</h2>
       <p className="text-pink-700 font-bold text-xl mt-2 mb-4">₹{product.price}</p>
       <div className="mb-4">{product.description}</div>

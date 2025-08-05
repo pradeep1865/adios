@@ -1,38 +1,24 @@
-import { useEffect, useState } from 'react'
-import Link from 'next/link'
+import ProductCard from '../components/ProductCard';
 
-export default function Home() {
-  const [products, setProducts] = useState([])
-
-  useEffect(() => {
-    fetch('/api/products')
-      .then(res => res.json())
-      .then(setProducts)
-  }, [])
-
+export default function Home({ products }) {
   return (
-    <div className="bg-pink-50 min-h-screen">
-      <header className="text-center py-8 bg-pink-200 text-pink-800">
-        <h1 className="text-4xl font-bold">Adios</h1>
-        <p className="text-xl">Baby & Kids Products Store</p>
-      </header>
-      <main className="p-8">
-        <h2 className="text-2xl font-semibold mb-4">Featured Products</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {products.map(product => (
-            <div key={product._id} className="bg-white shadow-md rounded-lg p-4 text-center">
-              <img src={product.image} alt={product.name} className="mx-auto mb-2 h-40 object-cover"/>
-              <h3 className="font-bold">{product.name}</h3>
-              <p className="text-pink-500 font-semibold">₹{product.price}</p>
-              <Link href={`/products/${product._id}`}>
-                <button className="mt-2 px-4 py-2 bg-pink-400 text-white rounded hover:bg-pink-500">
-                  View Details
-                </button>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </main>
-    </div>
-  )
+    <main className="max-w-7xl mx-auto py-10 px-4">
+      <div className="mb-10 text-center">
+        <h1 className="text-4xl font-bold text-pink-600">Welcome to Adios</h1>
+        <p className="mt-2 text-pink-700">Cute & Quality Products for Kids and Babies</p>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+        {products.map(product =>
+          <ProductCard key={product._id} product={product} />
+        )}
+      </div>
+    </main>
+  );
+}
+
+export async function getServerSideProps() {
+  // Replace with your real API/products path
+  const res = await fetch('https://adios-hazel.vercel.app/api/products');
+  const products = await res.json();
+  return { props: { products } };
 }
